@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { Suspense } from "react";
+import routeMap from "./routeMap";
+import {
+  Redirect,
+  Link,
+  Switch,
+  HashRouter as Router,
+  Route,
+} from "react-router-dom";
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <ul>
+        <li>
+          <Link to="/page-a">PageA</Link>
+        </li>
+        <li>
+          <Link to="/page-b">PageB</Link>
+        </li>
+      </ul>
+      <Switch>
+        <Suspense fallback={<div>loading...</div>}>
+          <Redirect exact form="/" to="/page-a" />
+          {routeMap.map((item) => {
+            return (
+              <Route
+                exact
+                key={item.path}
+                path={item.path}
+                component={item.component}
+              />
+            );
+          })}
+        </Suspense>
+      </Switch>
+    </Router>
   );
 }
 
